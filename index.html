@@ -3,13 +3,45 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Template Maker - Custom Icons</title>
+    <title>Card Template Maker - Ultimate Keyword Update</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap');
         body { font-family: 'Kanit', sans-serif; }
         .card-preview { width: 450px; height: 630px; position: relative; overflow: hidden; background: white; }
+        
+        /* สไตล์กล่องคีย์เวิร์ดต่อสู้สไตล์บัดดี้ (สีแดงเด่น) */
+        .buddy-badge {
+            display: inline-block;
+            background-color: #ef4444;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 11px;
+            margin-right: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+            border: 1px solid #dc2626;
+        }
+
+        /* สไตล์กล่องคีย์เวิร์ดสไตล์แวนการ์ด (แบ่งสีตามการใช้งาน) */
+        .vg-badge-lb { background-color: #6b21a8; color: white; border: 1px solid #581c87; } /* ม่วง */
+        .vg-badge-act { background-color: #16a34a; color: white; border: 1px solid #15803d; } /* เขียว */
+        .vg-badge-auto { background-color: #0284c7; color: white; border: 1px solid #0369a1; } /* ฟ้า */
+        .vg-badge-ongoing { background-color: #d97706; color: white; border: 1px solid #b45309; } /* ส้ม/ทอง */
+        .vg-badge-se { background-color: #db2777; color: white; border: 1px solid #be185d; } /* ชมพูเข้ม */
+        .vg-badge-e { background-color: #ea580c; color: white; border: 1px solid #c2410c; } /* ส้ม */
+        
+        .vg-badge {
+            display: inline-block;
+            padding: 2px 6px;
+            border-radius: 4px;
+            font-weight: bold;
+            font-size: 11px;
+            margin-right: 4px;
+            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        }
     </style>
 </head>
 <body class="bg-slate-900 min-h-screen p-6 text-gray-100">
@@ -18,7 +50,7 @@
         
         <!-- ฝั่งซ้าย: ฟอร์มกรอกข้อมูลการ์ด -->
         <div class="space-y-4">
-            <h2 class="text-2xl font-bold text-white border-b border-slate-700 pb-2">⚙️ เครื่องมือตั้งค่าการ์ด</h2>
+            <h2 class="text-2xl font-bold text-white border-b border-slate-700 pb-2">⚙️ เครื่องมือตั้งค่าการ์ด (ระบบคีย์เวิร์ดเต็มรูปแบบ)</h2>
             
             <!-- เลือกประเภทการ์ดหลัก -->
             <div>
@@ -70,7 +102,7 @@
                     <div id="leftCircle" class="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-md border-2 border-white">
                         3
                     </div>
-                    <!-- วงกลมขวา (แสดงไอคอนภาพที่คุณเตรียมไว้โดยอัตโนมัติ ไม่ต้องอัปโหลดเอง) -->
+                    <!-- วงกลมขวา (แสดงไอคอนภาพที่คุณเตรียมไว้โดยอัตโนมัติ) -->
                     <div id="rightCircle" class="w-14 h-14 bg-transparent rounded-full flex items-center justify-center overflow-hidden transition-all duration-300">
                         <img id="rightCircleIcon" src="" class="w-full h-full object-cover hidden" alt="Icon">
                         <span id="rightCircleText" class="font-bold text-xs text-gray-500 hidden">-</span>
@@ -87,7 +119,7 @@
                 </div>
 
                 <!-- กล่องข้อความประเภทและเอฟเฟกต์ -->
-                <div id="effectBox" class="bg-amber-50 p-3 rounded border border-amber-200 min-h-[140px] flex flex-col justify-start shadow-inner">
+                <div id="effectBox" class="bg-amber-50 p-3 rounded border border-amber-200 min-h-[140px] flex flex-col justify-start shadow-inner relative">
                     <div id="cardTypeText" class="font-bold text-sm text-amber-900 border-b border-amber-300 pb-1 mb-1">type card / subtype / element</div>
                     <div id="cardEffectText" class="text-xs text-slate-800 font-medium whitespace-pre-wrap leading-relaxed">Effect...</div>
                 </div>
@@ -97,7 +129,7 @@
                     นักรบมังกรโบราณ
                 </div>
 
-                <!-- ส่วนล่างสุด: สเตตัส (ATK/DEF หรือ แถบพลังชีวิต Life ของ Likit) -->
+                <!-- ส่วนล่างสุด: สเตตัส (ATK/DEF หรือ แถบพลังชีวิต Life) -->
                 <div id="bottomStatusArea" class="h-8 flex justify-center items-center">
                     <!-- แสดงสเตตัสตามเงื่อนไขของการ์ด -->
                 </div>
@@ -118,33 +150,14 @@
             }
         }
 
-        // 📍 [จุดสำคัญ]: ลิงก์ไปยังตำแหน่งไฟล์ภาพไอคอนที่คุณเตรียมไว้ในเครื่อง
-        // ถ้าคุณเก็บรูปไว้ในโฟลเดอร์เดียวกับไฟล์เว็บนี้ สามารถใส่ชื่อไฟล์ตรงๆ ได้เลยครับ
+        // ลิงก์รูปภาพไอคอนในเครื่องของคุณ
         const iconImages = {
-            // หมวดธาตุ
-            "ไฟ": "fire.png",
-            "น้ำ": "water.png",
-            "ดิน": "earth.png",
-            "ลม": "wind.png",
-            "แสง": "light.png",
-            "มืด": "dark.png",
-            // หมวดเวทมนตร์
-            "normal": "normal_spell.png",
-            "equip": "equip.png",
-            "counter": "counter.png",
-            "field": "field.png",
-            // หมวด Life
-            "normal_life": "normal_life.png",
-            "power": "power.png",
-            "defense": "defense.png",
-            "resources": "resources.png",
-            "Destruction": "destruction.png",
-            "recovery": "recovery.png",
-            // หมวด Token
+            "ไฟ": "fire.png", "น้ำ": "water.png", "ดิน": "earth.png", "ลม": "wind.png", "แสง": "light.png", "มืด": "dark.png",
+            "normal": "normal_spell.png", "equip": "equip.png", "counter": "counter.png", "field": "field.png",
+            "normal_life": "normal_life.png", "power": "power.png", "defense": "defense.png", "resources": "resources.png", "Destruction": "destruction.png", "recovery": "recovery.png",
             "token": "token.png"
         };
 
-        // ฟังก์ชันดึงรูปภาพไอคอนที่คุณเซ็ตไว้มาเปิดใช้งานโดยอัตโนมัติ
         function applyRightCircleIcon(value) {
             const iconImg = document.getElementById('rightCircleIcon');
             const circleText = document.getElementById('rightCircleText');
@@ -158,6 +171,35 @@
                 circleText.innerText = value;
                 circleText.classList.remove('hidden');
             }
+        }
+
+        // 🧠 ฟังก์ชันแปลงคีย์เวิร์ดทั้งหมดให้กลายเป็นป้ายสวยงาม (Regex)
+        function formatEffectText(text) {
+            if (!text) return "";
+
+            let formatted = text;
+
+            // 1. แปลงคีย์เวิร์ดประเภทความสามารถสไตล์การ์ดแวนการ์ด (แยกสี)
+            formatted = formatted.replace(/\[[Ll][Bb]\]/g, '<span class="vg-badge vg-badge-lb">[LB]</span>');
+            formatted = formatted.replace(/\[[Aa][Cc][Tt]\]/g, '<span class="vg-badge vg-badge-act">[ACT]</span>');
+            formatted = formatted.replace(/\[[Aa][Uu][Tt][Oo]\]/g, '<span class="vg-badge vg-badge-auto">[Auto]</span>');
+            formatted = formatted.replace(/\[[Oo][Nn][Gg][Oo][Ii][Nn][Gg]\]/g, '<span class="vg-badge vg-badge-ongoing">[Ongoing]</span>');
+            formatted = formatted.replace(/\[[Ss][Ee]\]/g, '<span class="vg-badge vg-badge-se">[SE]</span>');
+            formatted = formatted.replace(/\[[Ee]\]/g, '<span class="vg-badge vg-badge-e">[E]</span>');
+
+            // 2. แปลงคีย์เวิร์ดสกิลต่อสู้สไตล์บัดดี้ไฟท์ (กล่องสีแดงทั้งหมด)
+            const buddyKeywords = [
+                "Wandering", "Last Wish", "Penetrate", "Double Attack", 
+                "Follow Attack", "Phantom Strike", "Soulguard", "Taunt", "Counter attack"
+            ];
+
+            buddyKeywords.forEach(keyword => {
+                // สร้างคำค้นหาแบบไม่สนใจตัวพิมพ์เล็ก-ใหญ่ (เช่น [Soulguard] หรือ [soulguard])
+                const regex = new RegExp(`\\[${keyword.replace(/ /g, '\\s?')}\\]`, 'gi');
+                formatted = formatted.replace(regex, `<span class="buddy-badge">[${keyword}]</span>`);
+            });
+
+            return formatted;
         }
 
         function switchCardType() {
@@ -184,7 +226,7 @@
                         <div><label class="text-xs font-medium text-gray-300">ATK (หลักหน่วย)</label><input type="number" id="fieldAtk" value="6" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                         <div><label class="text-xs font-medium text-gray-300">DEF (หลักหน่วย)</label><input type="number" id="fieldDef" value="4" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                     </div>
-                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ (Skill)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">[Dragon Origin] เมื่อลงสนามสำเร็จ จั่วการ์ด 1 ใบ</textarea></div>
+                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ (Skill)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[Auto] เมื่อยูนิตนี้ลงสนามสำเร็จ ได้รับความสามารถ [Soulguard] และ [Penetrate] จนจบเทิร์น</textarea></div>
                 `;
             } 
             else if (type === 'spell') {
@@ -200,7 +242,7 @@
                         </div>
                         <div><label class="text-xs font-medium text-gray-300">ธาตุพลังเวท</label><input type="text" id="fieldElement" value="ไฟ" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                     </div>
-                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ (Effect)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">ทำลายยูนิตในแถวหน้าของฝ่ายตรงข้ามทั้งหมด</textarea></div>
+                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ (Effect)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[ACT] จ่าย [E] 2 หน่วย: ยูนิต 1 ใบที่สวมใส่การ์ดนี้จะได้รับ [Double Attack]</textarea></div>
                 `;
             }
             else if (type === 'likit') {
@@ -220,7 +262,7 @@
                         <div><label class="text-xs font-medium text-gray-300">Special Life (SL)</label><input type="number" id="fieldSL" value="4" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                     </div>
                     <div><label class="text-xs font-medium text-gray-300">ชนิดกติกา/ชื่อของ Special Life (เช่น Sp 2)</label><input type="text" id="fieldSLType" value="Sp 2" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ / เงื่อนไขพิเศษ</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">[Final Regret] เมื่อพลังชีวิตหมด สามารถใช้ความสามารถสวนกลับได้</textarea></div>
+                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ / เงื่อนไขพิเศษ</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[LB] [Ongoing] เมื่อยูนิตฝ่ายเราที่มี [Soulguard] ทำงาน จะได้รับพลังงาน [SE] 1 หน่วย</textarea></div>
                 `;
             }
             else if (type === 'life') {
@@ -235,7 +277,7 @@
                         </div>
                         <div><label class="text-xs font-medium text-gray-300">ชนิดเอฟเฟกต์ย่อย</label><input type="text" id="fieldEffectLifeType" value="Shield" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                     </div>
-                    <div><label class="text-xs font-medium text-gray-300">Effect (เมื่อหงายหน้า)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-14 rounded" oninput="updateCard()">ขัดขวางการโจมตีในเทิร์นนี้และจั่วการ์ด 1 ใบ</textarea></div>
+                    <div><label class="text-xs font-medium text-gray-300">Effect (เมื่อหงายหน้า)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">[Auto] เมื่อการ์ดใบนี้หงายหน้าในโซนชีวิต มอบ [Last Wish] ให้ยูนิตเรา 1 ใบ</textarea></div>
                     <div><label class="text-xs font-medium text-gray-300">Flavor Text</label><input type="text" id="fieldFlavor" value="เศษเสี้ยวแห่งความหวังสุดท้าย..." class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                 `;
             }
@@ -251,7 +293,7 @@
                         </div>
                         <div><label class="text-xs font-medium text-gray-300">Subtype ย่อย</label><input type="text" id="fieldSubtype" value="Spirit Token" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                     </div>
-                    <div><label class="text-xs font-medium text-gray-300">Effect ความสามารถ</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">โทเคนนี้ไม่สามารถใช้สั่งโจมตีในเทิร์นแรกที่เกิดได้</textarea></div>
+                    <div><label class="text-xs font-medium text-gray-300">Effect ความสามารถ</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[Ongoing] โทเคนนี้ได้รับ [Wandering] และจะไม่ตกเป็นเป้าหมายของ [Taunt]</textarea></div>
                 `;
             }
 
@@ -272,16 +314,19 @@
             const rightValue = document.getElementById('rightCircleValue').value;
             applyRightCircleIcon(rightValue);
 
+            // ดึงค่าเอฟเฟกต์มาแปลงร่างป้ายสัญลักษณ์
+            const effectInput = document.getElementById('fieldEffect')?.value || "";
+            const parsedEffect = formatEffectText(effectInput);
+
             if (type === 'unit') {
                 const cost = document.getElementById('fieldCost').value;
                 const cType = document.getElementById('fieldType').value;
                 const atk = document.getElementById('fieldAtk').value || 0;
                 const def = document.getElementById('fieldDef').value || 0;
-                const effect = document.getElementById('fieldEffect').value;
 
                 leftCircle.innerText = cost;
                 cardTypeText.innerText = `Unit / ${cType} / ธาตุ${rightValue}`;
-                cardEffectText.innerText = `Effect:\n${effect}`;
+                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
 
                 bottomStatusArea.innerHTML = `
                     <div class="w-full flex h-6 font-bold text-sm text-white shadow rounded overflow-hidden">
@@ -297,11 +342,10 @@
             else if (type === 'spell') {
                 const cost = document.getElementById('fieldCost').value;
                 const spElem = document.getElementById('fieldElement').value;
-                const effect = document.getElementById('fieldEffect').value;
 
                 leftCircle.innerText = cost;
                 cardTypeText.innerText = `Spell / ${rightValue} / ธาตุ${spElem}`;
-                cardEffectText.innerText = `Effect:\n${effect}`;
+                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
                 bottomStatusArea.innerHTML = '';
             }
             else if (type === 'likit') {
@@ -309,12 +353,11 @@
                 const na = parseInt(document.getElementById('fieldLifeNa').value) || 0;
                 const sl = parseInt(document.getElementById('fieldSL').value) || 0;
                 const slType = document.getElementById('fieldSLType').value;
-                const effect = document.getElementById('fieldEffect').value;
 
                 const totalLife = na + sl;
 
                 cardTypeText.innerText = `Likit Bearer / ${sub} / ธาตุ${rightValue}`;
-                cardEffectText.innerText = `Effect:\n${effect}`;
+                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
 
                 bottomStatusArea.innerHTML = `
                     <div class="w-full flex h-6 text-[10px] font-bold text-slate-900 overflow-hidden border border-zinc-400 rounded">
@@ -326,22 +369,18 @@
             }
             else if (type === 'life') {
                 const effLife = document.getElementById('fieldEffectLifeType').value;
-                const effect = document.getElementById('fieldEffect').value;
                 const flavor = document.getElementById('fieldFlavor').value;
-
-                // แปลงคำเพื่อแสดงในข้อความให้ตรงความเข้าใจ
                 const displayLifeName = rightValue === 'normal_life' ? 'normal' : rightValue;
 
                 cardTypeText.innerText = `(${displayLifeName} Life / ${effLife} Life)`;
-                cardEffectText.innerText = `Effect (เมื่อหงายหน้า):\n${effect}\n\n${flavor ? '*' + flavor + '*' : ''}`;
+                cardEffectText.innerHTML = `Effect (เมื่อหงายหน้า):\n${parsedEffect}\n\n${flavor ? '*' + flavor + '*' : ''}`;
                 bottomStatusArea.innerHTML = '';
             }
             else if (type === 'token') {
                 const sub = document.getElementById('fieldSubtype').value;
-                const effect = document.getElementById('fieldEffect').value;
 
                 cardTypeText.innerText = `Token / (${rightValue}) / ${sub}`;
-                cardEffectText.innerText = `Effect:\n${effect}`;
+                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
                 bottomStatusArea.innerHTML = '';
             }
         }
