@@ -1,48 +1,14 @@
 <!DOCTYPE html>
-<html lang="th">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Card Template Maker - Ultimate Keyword Update</title>
+    <title>Card Template Maker - Split Version</title>
+    <!-- Tailwind CSS & html2canvas -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Kanit:wght@300;400;500;700&display=swap');
-        body { font-family: 'Kanit', sans-serif; }
-        .card-preview { width: 450px; height: 630px; position: relative; overflow: hidden; background: white; }
-        
-        /* สไตล์กล่องคีย์เวิร์ดต่อสู้สไตล์บัดดี้ (สีแดงเด่น) */
-        .buddy-badge {
-            display: inline-block;
-            background-color: #ef4444;
-            color: white;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 11px;
-            margin-right: 4px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.15);
-            border: 1px solid #dc2626;
-        }
-
-        /* สไตล์กล่องคีย์เวิร์ดสไตล์แวนการ์ด (แบ่งสีตามการใช้งาน) */
-        .vg-badge-lb { background-color: #6b21a8; color: white; border: 1px solid #581c87; } /* ม่วง */
-        .vg-badge-act { background-color: #16a34a; color: white; border: 1px solid #15803d; } /* เขียว */
-        .vg-badge-auto { background-color: #0284c7; color: white; border: 1px solid #0369a1; } /* ฟ้า */
-        .vg-badge-ongoing { background-color: #d97706; color: white; border: 1px solid #b45309; } /* ส้ม/ทอง */
-        .vg-badge-se { background-color: #db2777; color: white; border: 1px solid #be185d; } /* ชมพูเข้ม */
-        .vg-badge-e { background-color: #ea580c; color: white; border: 1px solid #c2410c; } /* ส้ม */
-        
-        .vg-badge {
-            display: inline-block;
-            padding: 2px 6px;
-            border-radius: 4px;
-            font-weight: bold;
-            font-size: 11px;
-            margin-right: 4px;
-            box-shadow: 0 1px 2px rgba(0,0,0,0.1);
-        }
-    </style>
+    <!-- เชื่อมโยงไฟล์ CSS แยก -->
+    <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-900 min-h-screen p-6 text-gray-100">
 
@@ -50,11 +16,11 @@
         
         <!-- ฝั่งซ้าย: ฟอร์มกรอกข้อมูลการ์ด -->
         <div class="space-y-4">
-            <h2 class="text-2xl font-bold text-white border-b border-slate-700 pb-2">⚙️ เครื่องมือตั้งค่าการ์ด (ระบบคีย์เวิร์ดเต็มรูปแบบ)</h2>
+            <h2 class="text-2xl font-bold text-white border-b border-slate-700 pb-2">⚙️ Card Creator Studio</h2>
             
             <!-- เลือกประเภทการ์ดหลัก -->
             <div>
-                <label class="block text-sm font-medium text-gray-300">1. เลือกประเภทการ์ดหลัก (Card Type)</label>
+                <label class="block text-sm font-medium text-gray-300">1. Select Card Type</label>
                 <select id="cardTypeSelect" class="mt-1 block w-full rounded-md border border-slate-600 shadow-sm p-2 bg-slate-700 text-white" onchange="switchCardType()">
                     <option value="unit">Unit Card</option>
                     <option value="spell">Spell Card</option>
@@ -67,71 +33,94 @@
             <!-- ฟอร์มอินพุตทั่วไป -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
-                    <label class="block text-sm font-medium text-gray-300">ชื่อการ์ด (Name)</label>
-                    <input type="text" id="inputName" value="นักรบมังกรโบราณ" class="mt-1 block w-full rounded-md border border-slate-600 bg-slate-700 p-2 text-sm text-white" oninput="updateCard()">
+                    <label class="block text-sm font-medium text-gray-300">Card ID</label>
+                    <input type="text" id="inputCardID" value="ATH-TD-06" class="mt-1 block w-full rounded-md border border-slate-600 bg-slate-700 p-2 text-sm text-white" oninput="updateCard()">
                 </div>
                 <div>
-                    <label class="block text-sm font-medium text-gray-300">2. เลือกรูปภาพการ์ดตรงกลาง (Artwork)</label>
-                    <input type="file" id="inputImage" accept="image/*" class="mt-1 block w-full text-sm text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer" onchange="loadImage(event)">
+                    <label class="block text-sm font-medium text-gray-300">Card Name (EN)</label>
+                    <input type="text" id="inputName" value="Gray Lion Knight - Ash" class="mt-1 block w-full rounded-md border border-slate-600 bg-slate-700 p-2 text-sm text-white" oninput="updateCard()">
                 </div>
             </div>
 
-            <!-- ฟอร์มเฉพาะตัวที่จะเปลี่ยนไปตามประเภทการ์ด -->
-            <div id="dynamicFields" class="space-y-4 bg-slate-700/50 p-4 rounded-lg border border-slate-700">
-                <!-- เจนเนอเรตฟอร์มด้วย JavaScript -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                <div>
+                    <label class="block text-sm font-medium text-gray-300">Art Creator (Artist)</label>
+                    <input type="text" id="inputCreator" value="Studio ATH" class="mt-1 block w-full rounded-md border border-slate-600 bg-slate-700 p-2 text-sm text-white" oninput="updateCard()">
+                </div>
+                <div>
+                    <label class="block text-sm font-medium text-gray-300">Artwork Image</label>
+                    <input type="file" id="inputImage" accept="image/*" class="mt-1 block w-full text-sm text-gray-400 file:mr-4 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-blue-600 file:text-white hover:file:bg-blue-700 cursor-pointer" onchange="loadImage(event)">
+                </div>
             </div>
 
-            <!-- ปุ่มดาวน์โหลด -->
-            <div class="pt-4">
+            <!-- ฟอร์มเฉพาะประเภทการ์ด (เปลี่ยนตามไดนามิก) -->
+            <div id="dynamicFields" class="space-y-4 bg-slate-700/50 p-4 rounded-lg border border-slate-700">
+                <!-- Dynamic Form Generated by JS -->
+            </div>
+
+            <!-- ปุ่ม Export -->
+            <div class="pt-2">
                 <button onclick="downloadCard()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition flex items-center justify-center space-x-2 text-lg">
-                    <span>💾</span> <span>ดาวน์โหลดการ์ดเป็นรูปภาพ (PNG)</span>
+                    <span>💾</span> <span>Export Card (PNG)</span>
                 </button>
             </div>
         </div>
 
-        <!-- ฝั่งขวา: Live Card Preview -->
+        <!-- ฝั่งขวา: Live Card Preview (สัดส่วนรูป 60% / Text 40%) -->
         <div class="flex flex-col items-center justify-center bg-slate-850 p-4 border-2 border-dashed border-slate-700 rounded-xl">
-            <h3 class="text-sm font-semibold text-slate-400 mb-3">👁️ ตัวอย่างการ์ดจริง (Live Preview)</h3>
+            <h3 class="text-sm font-semibold text-slate-400 mb-3">👁️ Live Preview</h3>
             
-            <!-- ตัวการ์ดเรนเดอร์ -->
-            <div id="cardCaptureArea" class="card-preview border border-gray-300 shadow-2xl flex flex-col justify-between p-4 text-slate-900">
+            <!-- ตัวการ์ดเรนเดอร์หลัก -->
+            <div id="cardCaptureArea" class="card-preview border border-gray-300 shadow-2xl flex flex-col justify-between p-3.5 text-slate-900 relative">
                 
-                <!-- ส่วนบนสุด: วงกลม Cost (ซ้าย) และ วงกลมสัญลักษณ์ขวาบน -->
-                <div class="flex justify-between items-start h-16 relative">
-                    <!-- วงกลมซ้าย (Cost / X) -->
-                    <div id="leftCircle" class="w-14 h-14 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-2xl shadow-md border-2 border-white">
-                        3
+                <!-- ส่วนบนสุด: Cost (ซ้าย) และ Element Icon (ขวา) -->
+                <div class="flex justify-between items-start h-12 relative z-10 shrink-0">
+                    <div id="leftCircle" class="w-11 h-11 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md border-2 border-white">
+                        6
                     </div>
-                    <!-- วงกลมขวา (แสดงไอคอนภาพที่คุณเตรียมไว้โดยอัตโนมัติ) -->
-                    <div id="rightCircle" class="w-14 h-14 bg-transparent rounded-full flex items-center justify-center overflow-hidden transition-all duration-300">
+                    <div id="rightCircle" class="w-11 h-11 bg-transparent rounded-full flex items-center justify-center overflow-hidden transition-all duration-300">
                         <img id="rightCircleIcon" src="" class="w-full h-full object-cover hidden" alt="Icon">
                         <span id="rightCircleText" class="font-bold text-xs text-gray-500 hidden">-</span>
                     </div>
                 </div>
 
-                <!-- ช่องภาพการ์ดตรงกลาง (Artwork Area) -->
-                <div class="flex-1 my-2 bg-sky-50 rounded border border-gray-300 overflow-hidden relative flex items-center justify-center">
+                <!-- ช่องภาพการ์ดตรงกลาง (Artwork Area: ล็อกสัดส่วน ~60%) -->
+                <div class="card-art-container my-1.5 bg-sky-50 rounded border border-gray-300 overflow-hidden relative flex items-center justify-center shrink-0">
                     <img id="cardArt" src="" class="w-full h-full object-cover hidden">
-                    <div id="artPlaceholder" class="text-center text-sky-400 p-4">
-                        <svg class="mx-auto h-16 w-16 mb-2" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                        <span class="text-xs font-medium block">กรุณาเลือกรูปภาพจากเครื่องของคุณ</span>
+                    <div id="artPlaceholder" class="text-center text-sky-400 p-2">
+                        <svg class="mx-auto h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
+                        <span class="text-[11px] font-medium block">Select Image Artwork</span>
                     </div>
                 </div>
 
-                <!-- กล่องข้อความประเภทและเอฟเฟกต์ -->
-                <div id="effectBox" class="bg-amber-50 p-3 rounded border border-amber-200 min-h-[140px] flex flex-col justify-start shadow-inner relative">
-                    <div id="cardTypeText" class="font-bold text-sm text-amber-900 border-b border-amber-300 pb-1 mb-1">type card / subtype / element</div>
-                    <div id="cardEffectText" class="text-xs text-slate-800 font-medium whitespace-pre-wrap leading-relaxed">Effect...</div>
+                <!-- กล่องข้อความความสามารถ (Effect Box: ล็อกสัดส่วน ~40% ไม่ดันรูป) -->
+                <div id="effectBox" class="card-effect-box bg-amber-50 p-2.5 rounded border border-amber-200 flex flex-col justify-between shadow-inner relative overflow-hidden shrink-0">
+                    <div class="flex-1 flex flex-col overflow-hidden">
+                        <div id="cardTypeText" class="font-bold text-xs text-amber-900 border-b border-amber-300 pb-0.5 mb-1 shrink-0">Unit / Knight / Fire</div>
+                        <!-- ข้อความ Effect เพิ่มขนาดเริ่มต้น ย่ออัตโนมัติเมื่อยาวเกิน -->
+                        <div id="cardEffectText" class="card-effect-content text-slate-800 font-medium whitespace-pre-wrap leading-tight overflow-hidden">Effect...</div>
+                    </div>
+                    
+                    <!-- Flavor Text ขวาล่างใน Text Box -->
+                    <div id="cardFlavorText" class="text-[9.5px] italic text-gray-500 text-right font-normal border-t border-amber-200/50 pt-0.5 mt-1 shrink-0 truncate">
+                        ""
+                    </div>
                 </div>
 
                 <!-- แถบชื่อการ์ด (Name Bar) -->
-                <div class="my-2 bg-zinc-400 text-center py-1.5 rounded-md font-bold text-slate-900 shadow border border-zinc-500 text-base" id="cardNameDisplay">
-                    นักรบมังกรโบราณ
+                <div class="my-1 bg-zinc-300 text-center py-1 rounded font-bold text-slate-900 shadow border border-zinc-400 text-xs truncate px-2 shrink-0" id="cardNameDisplay">
+                    Gray Lion Knight - Ash
                 </div>
 
-                <!-- ส่วนล่างสุด: สเตตัส (ATK/DEF หรือ แถบพลังชีวิต Life) -->
-                <div id="bottomStatusArea" class="h-8 flex justify-center items-center">
-                    <!-- แสดงสเตตัสตามเงื่อนไขของการ์ด -->
+                <!-- ส่วนสเตตัส (ATK/DEF หรือ Life Bar) -->
+                <div id="bottomStatusArea" class="h-5 flex justify-center items-center mb-3 shrink-0">
+                    <!-- Dynamic Status Area -->
+                </div>
+
+                <!-- ส่วน Footer ล่างสุดนอกกล่อง (Card_ID ซ้ายล่าง / Art_Creator ขวาล่าง) -->
+                <div class="absolute bottom-1 left-3 right-3 flex justify-between items-center text-[9px] font-semibold text-gray-500 pointer-events-none">
+                    <span id="displayCardID">ATH-TD-06</span>
+                    <span id="displayCreator">Illust: Studio ATH</span>
                 </div>
 
             </div>
@@ -139,265 +128,30 @@
 
     </div>
 
-    <script>
-        function loadImage(event) {
-            const cardArt = document.getElementById('cardArt');
-            const artPlaceholder = document.getElementById('artPlaceholder');
-            if (event.target.files && event.target.files[0]) {
-                cardArt.src = URL.createObjectURL(event.target.files[0]);
-                cardArt.classList.remove('hidden');
-                artPlaceholder.classList.add('hidden');
-            }
-        }
+    <!-- เชื่อมโยงไฟล์ JS แยก -->
+    <script src="script.js"></script>
+    <!-- 1. ใส่สคริปต์ SheetJS ใน <head> ของ index.html -->
+<script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
 
-        // ลิงก์รูปภาพไอคอนในเครื่องของคุณ
-        const iconImages = {
-            "ไฟ": "fire.png", "น้ำ": "water.png", "ดิน": "earth.png", "ลม": "wind.png", "แสง": "light.png", "มืด": "dark.png",
-            "normal": "normal_spell.png", "equip": "equip.png", "counter": "counter.png", "field": "field.png",
-            "normal_life": "normal_life.png", "power": "power.png", "defense": "defense.png", "resources": "resources.png", "Destruction": "destruction.png", "recovery": "recovery.png",
-            "token": "token.png"
-        };
+<!-- 2. เพิ่มช่องอัปโหลดไฟล์ Excel ในฝั่งฟอร์มซ้ายมือ -->
+<div class="bg-slate-700/80 p-4 rounded-lg border border-slate-600 mb-4">
+    <label class="block text-sm font-bold text-emerald-400 mb-1">📊 Import Cards from Excel (.xlsx)</label>
+    <input type="file" id="excelFileInput" accept=".xlsx, .xls" class="block w-full text-sm text-gray-300 file:mr-4 file:py-2 file:px-4 file:rounded-md file:border-0 file:text-sm file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer" onchange="handleExcelUpload(event)">
+</div>
 
-        function applyRightCircleIcon(value) {
-            const iconImg = document.getElementById('rightCircleIcon');
-            const circleText = document.getElementById('rightCircleText');
-
-            if (iconImages[value]) {
-                iconImg.src = iconImages[value];
-                iconImg.classList.remove('hidden');
-                circleText.classList.add('hidden');
-            } else {
-                iconImg.classList.add('hidden');
-                circleText.innerText = value;
-                circleText.classList.remove('hidden');
-            }
-        }
-
-        // 🧠 ฟังก์ชันแปลงคีย์เวิร์ดทั้งหมดให้กลายเป็นป้ายสวยงาม (Regex)
-        function formatEffectText(text) {
-            if (!text) return "";
-
-            let formatted = text;
-
-            // 1. แปลงคีย์เวิร์ดประเภทความสามารถสไตล์การ์ดแวนการ์ด (แยกสี)
-            formatted = formatted.replace(/\[[Ll][Bb]\]/g, '<span class="vg-badge vg-badge-lb">[LB]</span>');
-            formatted = formatted.replace(/\[[Aa][Cc][Tt]\]/g, '<span class="vg-badge vg-badge-act">[ACT]</span>');
-            formatted = formatted.replace(/\[[Aa][Uu][Tt][Oo]\]/g, '<span class="vg-badge vg-badge-auto">[Auto]</span>');
-            formatted = formatted.replace(/\[[Oo][Nn][Gg][Oo][Ii][Nn][Gg]\]/g, '<span class="vg-badge vg-badge-ongoing">[Ongoing]</span>');
-            formatted = formatted.replace(/\[[Ss][Ee]\]/g, '<span class="vg-badge vg-badge-se">[SE]</span>');
-            formatted = formatted.replace(/\[[Ee]\]/g, '<span class="vg-badge vg-badge-e">[E]</span>');
-
-            // 2. แปลงคีย์เวิร์ดสกิลต่อสู้สไตล์บัดดี้ไฟท์ (กล่องสีแดงทั้งหมด)
-            const buddyKeywords = [
-                "Wandering", "Last Wish", "Penetrate", "Double Attack", 
-                "Follow Attack", "Phantom Strike", "Soulguard", "Taunt", "Counter attack"
-            ];
-
-            buddyKeywords.forEach(keyword => {
-                // สร้างคำค้นหาแบบไม่สนใจตัวพิมพ์เล็ก-ใหญ่ (เช่น [Soulguard] หรือ [soulguard])
-                const regex = new RegExp(`\\[${keyword.replace(/ /g, '\\s?')}\\]`, 'gi');
-                formatted = formatted.replace(regex, `<span class="buddy-badge">[${keyword}]</span>`);
-            });
-
-            return formatted;
-        }
-
-        function switchCardType() {
-            const type = document.getElementById('cardTypeSelect').value;
-            const fields = document.getElementById('dynamicFields');
-            const leftCircle = document.getElementById('leftCircle');
-            
-            let htmlForm = '';
-
-            if (type === 'unit') {
-                leftCircle.style.visibility = 'visible';
-                htmlForm = `
-                    <div class="grid grid-cols-3 gap-2">
-                        <div><label class="text-xs font-medium text-gray-300">Cost</label><input type="text" id="fieldCost" value="3" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                        <div><label class="text-xs font-medium text-gray-300">คลาสยูนิต</label><input type="text" id="fieldType" value="นักรบมังกร" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                        <div>
-                            <label class="text-xs font-medium text-gray-300">เลือกธาตุ (ขวาบน)</label>
-                            <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
-                                <option value="ไฟ">ไฟ</option><option value="น้ำ">น้ำ</option><option value="ดิน">ดิน</option><option value="ลม">ลม</option><option value="แสง">แสง</option><option value="มืด">มืด</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><label class="text-xs font-medium text-gray-300">ATK (หลักหน่วย)</label><input type="number" id="fieldAtk" value="6" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                        <div><label class="text-xs font-medium text-gray-300">DEF (หลักหน่วย)</label><input type="number" id="fieldDef" value="4" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    </div>
-                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ (Skill)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[Auto] เมื่อยูนิตนี้ลงสนามสำเร็จ ได้รับความสามารถ [Soulguard] และ [Penetrate] จนจบเทิร์น</textarea></div>
-                `;
-            } 
-            else if (type === 'spell') {
-                leftCircle.style.visibility = 'visible';
-                htmlForm = `
-                    <div class="grid grid-cols-3 gap-2">
-                        <div><label class="text-xs font-medium text-gray-300">Cost</label><input type="text" id="fieldCost" value="2" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                        <div>
-                            <label class="text-xs font-medium text-gray-300">ประเภทเวทมนตร์ (ขวาบน)</label>
-                            <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
-                                <option value="normal">normal</option><option value="equip">equip</option><option value="counter">counter</option><option value="field">field</option>
-                            </select>
-                        </div>
-                        <div><label class="text-xs font-medium text-gray-300">ธาตุพลังเวท</label><input type="text" id="fieldElement" value="ไฟ" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    </div>
-                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ (Effect)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[ACT] จ่าย [E] 2 หน่วย: ยูนิต 1 ใบที่สวมใส่การ์ดนี้จะได้รับ [Double Attack]</textarea></div>
-                `;
-            }
-            else if (type === 'likit') {
-                leftCircle.style.visibility = 'hidden';
-                htmlForm = `
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-xs font-medium text-gray-300">เลือกธาตุ (ขวาบน)</label>
-                            <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
-                                <option value="ไฟ">ไฟ</option><option value="น้ำ">น้ำ</option><option value="ดิน">ดิน</option><option value="ลม">ลม</option><option value="แสง">แสง</option><option value="มืด">มืด</option>
-                            </select>
-                        </div>
-                        <div><label class="text-xs font-medium text-gray-300">สายพลัง</label><input type="text" id="fieldSubtype" value="จอมเวท" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    </div>
-                    <div class="grid grid-cols-2 gap-2">
-                        <div><label class="text-xs font-medium text-gray-300">Na Life (พลังชีวิตปกติ)</label><input type="number" id="fieldLifeNa" value="6" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                        <div><label class="text-xs font-medium text-gray-300">Special Life (SL)</label><input type="number" id="fieldSL" value="4" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    </div>
-                    <div><label class="text-xs font-medium text-gray-300">ชนิดกติกา/ชื่อของ Special Life (เช่น Sp 2)</label><input type="text" id="fieldSLType" value="Sp 2" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    <div><label class="text-xs font-medium text-gray-300">ความสามารถ / เงื่อนไขพิเศษ</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[LB] [Ongoing] เมื่อยูนิตฝ่ายเราที่มี [Soulguard] ทำงาน จะได้รับพลังงาน [SE] 1 หน่วย</textarea></div>
-                `;
-            }
-            else if (type === 'life') {
-                leftCircle.style.visibility = 'hidden';
-                htmlForm = `
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-xs font-medium text-gray-300">ประเภท Life (ขวาบน)</label>
-                            <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
-                                <option value="normal_life">normal</option><option value="power">power</option><option value="defense">defense</option><option value="resources">resources</option><option value="Destruction">Destruction</option><option value="recovery">recovery</option>
-                            </select>
-                        </div>
-                        <div><label class="text-xs font-medium text-gray-300">ชนิดเอฟเฟกต์ย่อย</label><input type="text" id="fieldEffectLifeType" value="Shield" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    </div>
-                    <div><label class="text-xs font-medium text-gray-300">Effect (เมื่อหงายหน้า)</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">[Auto] เมื่อการ์ดใบนี้หงายหน้าในโซนชีวิต มอบ [Last Wish] ให้ยูนิตเรา 1 ใบ</textarea></div>
-                    <div><label class="text-xs font-medium text-gray-300">Flavor Text</label><input type="text" id="fieldFlavor" value="เศษเสี้ยวแห่งความหวังสุดท้าย..." class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                `;
-            }
-            else if (type === 'token') {
-                leftCircle.style.visibility = 'hidden';
-                htmlForm = `
-                    <div class="grid grid-cols-2 gap-2">
-                        <div>
-                            <label class="text-xs font-medium text-gray-300">ประเภท Token (ขวาบน)</label>
-                            <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
-                                <option value="token">token</option>
-                            </select>
-                        </div>
-                        <div><label class="text-xs font-medium text-gray-300">Subtype ย่อย</label><input type="text" id="fieldSubtype" value="Spirit Token" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                    </div>
-                    <div><label class="text-xs font-medium text-gray-300">Effect ความสามารถ</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[Ongoing] โทเคนนี้ได้รับ [Wandering] และจะไม่ตกเป็นเป้าหมายของ [Taunt]</textarea></div>
-                `;
-            }
-
-            fields.innerHTML = htmlForm;
-            updateCard();
-        }
-
-        function updateCard() {
-            const type = document.getElementById('cardTypeSelect').value;
-            const name = document.getElementById('inputName').value;
-            document.getElementById('cardNameDisplay').innerText = name;
-            
-            const leftCircle = document.getElementById('leftCircle');
-            const cardTypeText = document.getElementById('cardTypeText');
-            const cardEffectText = document.getElementById('cardEffectText');
-            const bottomStatusArea = document.getElementById('bottomStatusArea');
-            
-            const rightValue = document.getElementById('rightCircleValue').value;
-            applyRightCircleIcon(rightValue);
-
-            // ดึงค่าเอฟเฟกต์มาแปลงร่างป้ายสัญลักษณ์
-            const effectInput = document.getElementById('fieldEffect')?.value || "";
-            const parsedEffect = formatEffectText(effectInput);
-
-            if (type === 'unit') {
-                const cost = document.getElementById('fieldCost').value;
-                const cType = document.getElementById('fieldType').value;
-                const atk = document.getElementById('fieldAtk').value || 0;
-                const def = document.getElementById('fieldDef').value || 0;
-
-                leftCircle.innerText = cost;
-                cardTypeText.innerText = `Unit / ${cType} / ธาตุ${rightValue}`;
-                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
-
-                bottomStatusArea.innerHTML = `
-                    <div class="w-full flex h-6 font-bold text-sm text-white shadow rounded overflow-hidden">
-                        <div class="w-1/2 bg-red-600 flex items-center justify-center space-x-1">
-                            <span>⚔️ ATK:</span><span>${atk}</span>
-                        </div>
-                        <div class="w-1/2 bg-blue-600 flex items-center justify-center space-x-1">
-                            <span>🛡️ DEF:</span><span>${def}</span>
-                        </div>
-                    </div>
-                `;
-            }
-            else if (type === 'spell') {
-                const cost = document.getElementById('fieldCost').value;
-                const spElem = document.getElementById('fieldElement').value;
-
-                leftCircle.innerText = cost;
-                cardTypeText.innerText = `Spell / ${rightValue} / ธาตุ${spElem}`;
-                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
-                bottomStatusArea.innerHTML = '';
-            }
-            else if (type === 'likit') {
-                const sub = document.getElementById('fieldSubtype').value;
-                const na = parseInt(document.getElementById('fieldLifeNa').value) || 0;
-                const sl = parseInt(document.getElementById('fieldSL').value) || 0;
-                const slType = document.getElementById('fieldSLType').value;
-
-                const totalLife = na + sl;
-
-                cardTypeText.innerText = `Likit Bearer / ${sub} / ธาตุ${rightValue}`;
-                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
-
-                bottomStatusArea.innerHTML = `
-                    <div class="w-full flex h-6 text-[10px] font-bold text-slate-900 overflow-hidden border border-zinc-400 rounded">
-                        <div class="w-1/3 bg-lime-400 flex items-center justify-center">Life รวม: ${totalLife}</div>
-                        <div class="w-1/3 bg-gray-100 flex items-center justify-center border-x border-zinc-400">Na Life: ${na}</div>
-                        <div class="w-1/3 bg-amber-600 text-white flex items-center justify-center">SL: ${sl} (${slType})</div>
-                    </div>
-                `;
-            }
-            else if (type === 'life') {
-                const effLife = document.getElementById('fieldEffectLifeType').value;
-                const flavor = document.getElementById('fieldFlavor').value;
-                const displayLifeName = rightValue === 'normal_life' ? 'normal' : rightValue;
-
-                cardTypeText.innerText = `(${displayLifeName} Life / ${effLife} Life)`;
-                cardEffectText.innerHTML = `Effect (เมื่อหงายหน้า):\n${parsedEffect}\n\n${flavor ? '*' + flavor + '*' : ''}`;
-                bottomStatusArea.innerHTML = '';
-            }
-            else if (type === 'token') {
-                const sub = document.getElementById('fieldSubtype').value;
-
-                cardTypeText.innerText = `Token / (${rightValue}) / ${sub}`;
-                cardEffectText.innerHTML = `Effect:\n${parsedEffect}`;
-                bottomStatusArea.innerHTML = '';
-            }
-        }
-
-        function downloadCard() {
-            const area = document.getElementById('cardCaptureArea');
-            const cardName = document.getElementById('inputName').value || 'card-output';
-            
-            html2canvas(area, { scale: 2, useCORS: true }).then(canvas => {
-                const link = document.createElement('a');
-                link.download = `${cardName}.png`;
-                link.href = canvas.toDataURL('image/png');
-                link.click();
-            });
-        }
-
-        window.onload = switchCardType;
-    </script>
+<!-- 3. เพิ่มโซนแสดงผลการ์ดทั้งหมดแบบ Grid ด้านล่างสุดของหน้าเว็บ (ใต้แมตช์ใหญ่) -->
+<div class="max-w-6xl mx-auto mt-8 bg-slate-800 rounded-xl p-6 border border-slate-700">
+    <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
+        <h3 class="text-xl font-bold text-white">🃏 Generated Cards Deck (<span id="cardCount">0</span> cards)</h3>
+        <button onclick="downloadAllCards()" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded-lg shadow text-sm">
+            📦 Download All Cards (ZIP)
+        </button>
+    </div>
+    
+    <!-- โซนที่การ์ดทุกใบจาก Excel จะถูกเสกออกมาวางเรียงกัน -->
+    <div id="deckGridContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center">
+        <!-- JS จะวนลูปมาสร้างการ์ดใส่ตรงนี้ -->
+    </div>
+</div>
 </body>
 </html>

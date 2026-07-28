@@ -1,0 +1,106 @@
+@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap');
+
+body { 
+    font-family: 'Kanit', sans-serif; 
+}
+
+.card-preview { 
+    width: 450px; 
+    height: 630px; 
+    position: relative; 
+    overflow: hidden; 
+    background: white; 
+}
+
+/* สัดส่วนภาพ Artwork ~60% */
+.card-art-container {
+    height: 290px !important; 
+}
+
+/* สัดส่วน Effect Box ~40% */
+.card-effect-box {
+    height: 140px !important;
+}
+
+/* ขนาดตัวอักษรย่ออัตโนมัติ */
+.card-effect-content {
+    font-size: clamp(10px, 2.2cqw, 12px);
+    max-height: 95px;
+}
+
+/* =========================================================
+   หมวดที่ 1: คีย์เวิร์ดประเภทความสามารถ (Ability Badges)
+   ========================================================= */
+.badge-act     { background-color: #0284c7; color: white; border: 1px solid #0369a1; } /* ฟ้า */
+.badge-auto    { background-color: #ea580c; color: white; border: 1px solid #c2410c; } /* ส้ม */
+.badge-counter { background-color: #dc2626; color: white; border: 1px solid #b91c1c; } /* แดง */
+.badge-ongoing { background-color: #16a34a; color: white; border: 1px solid #15803d; } /* เขียว */
+
+/* =========================================================
+   หมวดที่ 2: ระบบเปลี่ยนร่าง & ไฮไลท์ (Special Mechanics)
+   ========================================================= */
+.badge-mech {
+    background-color: #ffffff;
+    color: #111827;
+    border: 1.5px solid #374151;
+    font-weight: 800;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
+}
+
+/* =========================================================
+   หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว (Status & Trigger)
+   ========================================================= */
+.badge-status {
+    background-color: #7e22ce;
+    color: white;
+    border: 1px solid #6b21a8;
+}
+
+/* =========================================================
+   หมวดที่ 4: การต่อสู้ / ปะทะ (Combat & Battle)
+   ========================================================= */
+.badge-combat {
+    background-color: #ef4444;
+    color: white;
+    border: 1px solid #b91c1c;
+}
+
+/* =========================================================
+   หมวดที่ 5: ข้อจำกัดรอบการใช้งาน (Turn Limit Constraints)
+   ========================================================= */
+.badge-limit {
+    background-color: #6b7280;
+    color: white;
+    border: 1px solid #4b5563;
+}
+
+/* =========================================================
+   หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร (Icons & Resources)
+   ========================================================= */
+.badge-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 20px;
+    height: 18px;
+    padding: 0 4px;
+    background-color: #1e293b;
+    color: #f8fafc;
+    border: 1px solid #475569;
+    border-radius: 3px;
+    font-size: 10px;
+    font-weight: 800;
+}
+
+/* Base Badge Style */
+.keyword-badge {
+    display: inline-block;
+    padding: 1px 5px;
+    border-radius: 4px;
+    font-weight: 700;
+    font-size: 10.5px;
+    margin-right: 3px;
+    margin-bottom: 2px;
+    line-height: 1.2;
+    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+}
