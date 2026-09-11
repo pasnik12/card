@@ -30,7 +30,6 @@ function applyRightCircleIcon(value) {
     }
 }
 
-// ฟังก์ชันแปลงคีย์เวิร์ดตามหมวดหมู่ใหม่
 function formatEffectText(text) {
     if (!text) return "";
 
@@ -42,7 +41,7 @@ function formatEffectText(text) {
     formatted = formatted.replace(/\[Counter\]/gi, '<span class="keyword-badge badge-counter">[Counter]</span>');
     formatted = formatted.replace(/\[Ongoing\]/gi, '<span class="keyword-badge badge-ongoing">[Ongoing]</span>');
 
-    // --- หมวดที่ 2: ไฮไลท์ / ระบบเปลี่ยนร่าง (กล่องขาวข้อความดำ) ---
+    // --- หมวดที่ 2: ไฮไลท์ / ระบบเปลี่ยนร่าง ---
     const mechanicsKeywords = ["Final Regret", "Build Up", "Henshin", "Ride On", "Dragon origin"];
     mechanicsKeywords.forEach(kw => {
         const regex = new RegExp(`\\[${kw.replace(/ /g, '\\s?')}\\]`, 'gi');
@@ -51,7 +50,7 @@ function formatEffectText(text) {
     formatted = formatted.replace(/\[Evo\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-mech">Evo [$1]</span>');
     formatted = formatted.replace(/\[Evolution\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-mech">Evolution [$1]</span>');
 
-    // --- หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว (สีม่วง) ---
+    // --- หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว ---
     const statusKeywords = ["Wandering", "Last Wish"];
     statusKeywords.forEach(kw => {
         const regex = new RegExp(`\\[${kw.replace(/ /g, '\\s?')}\\]`, 'gi');
@@ -60,14 +59,14 @@ function formatEffectText(text) {
     formatted = formatted.replace(/\[Poison\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-status">Poison [$1]</span>');
     formatted = formatted.replace(/\[Death Mark\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-status">Death Mark [$1]</span>');
 
-    // --- หมวดที่ 4: การต่อสู้ / ปะทะ (สีส้มแดง) ---
+    // --- หมวดที่ 4: การต่อสู้ / ปะทะ ---
     const combatKeywords = ["Penetrate", "Soulguard", "Taunt", "Counter attack", "Double Attack", "Follow Attack", "Phantom Strike"];
     combatKeywords.forEach(kw => {
         const regex = new RegExp(`\\[${kw.replace(/ /g, '\\s?')}\\]`, 'gi');
         formatted = formatted.replace(regex, `<span class="keyword-badge badge-combat">[${kw}]</span>`);
     });
 
-    // --- หมวดที่ 5: ข้อจำกัดรอบการใช้งาน (สีเทา) ---
+    // --- หมวดที่ 5: ข้อจำกัดรอบการใช้งาน ---
     formatted = formatted.replace(/\[(\d+(?:An)?\/Turn)\]/gi, '<span class="keyword-badge badge-limit">[$1]</span>');
 
     // --- หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร ---
@@ -142,7 +141,6 @@ function switchCardType() {
                 <div><label class="text-xs font-medium text-gray-300">Normal Life (Na)</label><input type="number" id="fieldLifeNa" value="5" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
                 <div><label class="text-xs font-medium text-gray-300">Special Life (SL)</label><input type="number" id="fieldSL" value="3" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
             </div>
-            <div><label class="text-xs font-medium text-gray-300">Special Life Type</label><input type="text" id="fieldSLType" value="Resource" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
             <div><label class="text-xs font-medium text-gray-300">Effect Text</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">[Ongoing] My New Product -> Once per turn...</textarea></div>
             <div><label class="text-xs font-medium text-gray-300">Flavor Text</label><input type="text" id="fieldFlavor" value="Gears spinning with wind..." class="w-full bg-slate-600 border border-slate-500 p-1 text-xs rounded" oninput="updateCard()"></div>
         `;
@@ -238,17 +236,15 @@ function updateCard() {
         const sub = document.getElementById('fieldSubtype').value;
         const na = parseInt(document.getElementById('fieldLifeNa').value) || 0;
         const sl = parseInt(document.getElementById('fieldSL').value) || 0;
-        const slType = document.getElementById('fieldSLType').value;
-
         const totalLife = na + sl;
 
         cardTypeText.innerText = `Likit Bearer / ${sub} / ${rightValue}`;
 
         bottomStatusArea.innerHTML = `
-            <div class="w-full flex h-5 text-[9px] font-bold text-slate-900 overflow-hidden border border-zinc-400 rounded">
+            <div class="w-full flex h-5 text-[10px] font-bold text-slate-900 overflow-hidden border border-zinc-400 rounded">
                 <div class="w-1/3 bg-lime-400 flex items-center justify-center">Life: ${totalLife}</div>
                 <div class="w-1/3 bg-gray-100 flex items-center justify-center border-x border-zinc-400">Na: ${na}</div>
-                <div class="w-1/3 bg-amber-600 text-white flex items-center justify-center">SL: ${sl} (${slType})</div>
+                <div class="w-1/3 bg-amber-600 text-white flex items-center justify-center">SL: ${sl}</div>
             </div>
         `;
     }
@@ -332,7 +328,7 @@ function generateDeckFromData(cardsArray) {
             <div class="card-effect-box bg-amber-50 p-2 rounded border border-amber-200 flex flex-col justify-between shadow-inner relative overflow-hidden shrink-0">
                 <div class="flex-1 flex flex-col overflow-hidden">
                     <div class="font-bold text-[11px] text-amber-900 border-b border-amber-300 pb-0.5 mb-1 truncate">${typeText}</div>
-                    <div class="card-effect-content text-slate-800 font-medium whitespace-pre-wrap leading-tight overflow-hidden">${effectText}</div>
+                    <div class="card-effect-content text-slate-800 font-medium whitespace-pre-wrap overflow-hidden">${effectText}</div>
                 </div>
                 <div class="text-[9px] italic text-gray-500 text-right font-normal border-t border-amber-200/50 pt-0.5 mt-1 shrink-0 truncate">
                     ${flavorText}
