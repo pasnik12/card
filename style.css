@@ -12,23 +12,22 @@ body {
     background: white; 
 }
 
-/* สัดส่วนภาพ Artwork ~60% */
+/* ปรับความสูง Artwork ลงเล็กน้อยเพื่อเปิดพื้นที่ให้กล่องข้อความ */
 .card-art-container {
-    height: 285px !important; 
+    height: 275px !important; 
 }
 
-/* สัดส่วน Effect Box ~40% */
+/* เพิ่มความสูง Effect Box */
 .card-effect-box {
-    height: 145px !important;
+    height: 160px !important;
 }
 
-/* แก้ไขปัญหาข้อความจมและสระภาษาไทยโดนตัด */
+/* ปรับระยะห่างบรรทัดและการตัดคำให้รองรับสระไทย */
 .card-effect-content {
-    font-size: clamp(10px, 2.2cqw, 11.5px);
-    line-height: 1.55 !important;
-    max-height: 98px;
+    line-height: 1.45 !important;
     word-break: break-word;
-    overflow: hidden;
+    white-space: pre-wrap;
+    width: 100%;
 }
 
 /* =========================================================
@@ -40,7 +39,7 @@ body {
 .badge-ongoing { background-color: #16a34a; color: white; border: 1px solid #15803d; }
 
 /* =========================================================
-   หมวดที่ 2: ระบบเปลี่ยนร่าง & ไฮไลท์ (Special Mechanics)
+   หมวดที่ 2: ระบบเปลี่ยนร่าง & ไฮไลท์
    ========================================================= */
 .badge-mech {
     background-color: #ffffff;
@@ -51,7 +50,7 @@ body {
 }
 
 /* =========================================================
-   หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว (Status & Trigger)
+   หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว
    ========================================================= */
 .badge-status {
     background-color: #7e22ce;
@@ -60,7 +59,7 @@ body {
 }
 
 /* =========================================================
-   หมวดที่ 4: การต่อสู้ / ปะทะ (Combat & Battle)
+   หมวดที่ 4: การต่อสู้ / ปะทะ
    ========================================================= */
 .badge-combat {
     background-color: #ef4444;
@@ -69,43 +68,43 @@ body {
 }
 
 /* =========================================================
-   หมวดที่ 5: ข้อจำกัดรอบการใช้งาน (Turn Limit Constraints)
+   หมวดที่ 5: ข้อจำกัดรอบการใช้งาน
    ========================================================= */
 .badge-limit {
-    background-color: #6b7280;
+    background-color: #475569;
     color: white;
-    border: 1px solid #4b5563;
+    border: 1px solid #334155;
 }
 
 /* =========================================================
-   หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร (Icons & Resources)
+   หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร
    ========================================================= */
 .badge-icon {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-width: 20px;
-    height: 18px;
-    padding: 0 4px;
+    min-width: 18px;
+    height: 16px;
+    padding: 0 3px;
     background-color: #1e293b;
     color: #f8fafc;
     border: 1px solid #475569;
     border-radius: 3px;
-    font-size: 10px;
+    font-size: 9.5px;
     font-weight: 800;
-    vertical-align: middle;
+    vertical-align: 1px;
 }
 
 /* Base Badge Style */
 .keyword-badge {
     display: inline-block;
-    padding: 1px 5px;
-    border-radius: 4px;
+    padding: 0px 5px;
+    border-radius: 3px;
     font-weight: 700;
     font-size: 10px;
     margin-right: 3px;
-    margin-bottom: 2px;
+    margin-bottom: 1px;
     line-height: 1.35;
-    vertical-align: middle;
+    vertical-align: 1px;
     box-shadow: 0 1px 2px rgba(0,0,0,0.15);
 }

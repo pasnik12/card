@@ -35,13 +35,13 @@ function formatEffectText(text) {
 
     let formatted = text;
 
-    // --- หมวดที่ 1: ประเภทความสามารถ ---
+    // หมวดที่ 1: ประเภทความสามารถ
     formatted = formatted.replace(/\[ACT\]/gi, '<span class="keyword-badge badge-act">[ACT]</span>');
     formatted = formatted.replace(/\[Auto\]/gi, '<span class="keyword-badge badge-auto">[Auto]</span>');
     formatted = formatted.replace(/\[Counter\]/gi, '<span class="keyword-badge badge-counter">[Counter]</span>');
     formatted = formatted.replace(/\[Ongoing\]/gi, '<span class="keyword-badge badge-ongoing">[Ongoing]</span>');
 
-    // --- หมวดที่ 2: ไฮไลท์ / ระบบเปลี่ยนร่าง ---
+    // หมวดที่ 2: ไฮไลท์ / ระบบเปลี่ยนร่าง
     const mechanicsKeywords = ["Final Regret", "Build Up", "Henshin", "Ride On", "Dragon origin"];
     mechanicsKeywords.forEach(kw => {
         const regex = new RegExp(`\\[${kw.replace(/ /g, '\\s?')}\\]`, 'gi');
@@ -50,7 +50,7 @@ function formatEffectText(text) {
     formatted = formatted.replace(/\[Evo\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-mech">Evo [$1]</span>');
     formatted = formatted.replace(/\[Evolution\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-mech">Evolution [$1]</span>');
 
-    // --- หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว ---
+    // หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว
     const statusKeywords = ["Wandering", "Last Wish"];
     statusKeywords.forEach(kw => {
         const regex = new RegExp(`\\[${kw.replace(/ /g, '\\s?')}\\]`, 'gi');
@@ -59,17 +59,17 @@ function formatEffectText(text) {
     formatted = formatted.replace(/\[Poison\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-status">Poison [$1]</span>');
     formatted = formatted.replace(/\[Death Mark\s*([^\]]+)\]/gi, '<span class="keyword-badge badge-status">Death Mark [$1]</span>');
 
-    // --- หมวดที่ 4: การต่อสู้ / ปะทะ ---
+    // หมวดที่ 4: การต่อสู้ / ปะทะ
     const combatKeywords = ["Penetrate", "Soulguard", "Taunt", "Counter attack", "Double Attack", "Follow Attack", "Phantom Strike"];
     combatKeywords.forEach(kw => {
         const regex = new RegExp(`\\[${kw.replace(/ /g, '\\s?')}\\]`, 'gi');
         formatted = formatted.replace(regex, `<span class="keyword-badge badge-combat">[${kw}]</span>`);
     });
 
-    // --- หมวดที่ 5: ข้อจำกัดรอบการใช้งาน ---
+    // หมวดที่ 5: ข้อจำกัดรอบการใช้งาน
     formatted = formatted.replace(/\[(\d+(?:An)?\/Turn)\]/gi, '<span class="keyword-badge badge-limit">[$1]</span>');
 
-    // --- หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร ---
+    // หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร
     const iconKeys = ["LB", "U", "S", "T", "C", "E", "SE"];
     iconKeys.forEach(key => {
         const regex = new RegExp(`\\[${key}\\]`, 'g');
@@ -79,6 +79,22 @@ function formatEffectText(text) {
     return formatted;
 }
 
+// ย่อขนาดฟอนต์อัตโนมัติหากข้อความล้นกล่อง
+function autoFitEffectText() {
+    const content = document.getElementById('cardEffectText');
+    if (!content) return;
+    const container = content.parentElement;
+    if (!container) return;
+
+    let fontSize = 11;
+    content.style.fontSize = fontSize + 'px';
+
+    while (content.scrollHeight > container.clientHeight && fontSize > 8) {
+        fontSize -= 0.5;
+        content.style.fontSize = fontSize + 'px';
+    }
+}
+
 function switchCardType() {
     const type = document.getElementById('cardTypeSelect').value;
     const fields = document.getElementById('dynamicFields');
@@ -86,7 +102,28 @@ function switchCardType() {
     
     let htmlForm = '';
 
-    if (type === 'unit') {
+    if (type === 'likit') {
+        leftCircle.style.visibility = 'hidden';
+        htmlForm = `
+            <div class="grid grid-cols-2 gap-2">
+                <div>
+                    <label class="text-xs font-medium text-gray-300">Element (Top-Right)</label>
+                    <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
+                        <option value="Fire">Fire</option><option value="Wind">Wind</option><option value="Water">Water</option><option value="Earth">Earth</option><option value="Light">Light</option><option value="Dark">Dark</option>
+                    </select>
+                </div>
+                <div><label class="text-xs font-medium text-gray-300">Archetype / Subtype</label><input type="text" id="fieldSubtype" value="Adventure" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
+            </div>
+            <div class="grid grid-cols-2 gap-2">
+                <div><label class="text-xs font-medium text-gray-300">Normal Life (Na)</label><input type="number" id="fieldLifeNa" value="4" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
+                <div><label class="text-xs font-medium text-gray-300">Special Life (SL)</label><input type="number" id="fieldSL" value="4" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
+            </div>
+            <div><label class="text-xs font-medium text-gray-300">Effect Text</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-20 rounded" oninput="updateCard()">[Ongoing] ในเทิร์นของคุณ: ยูนิตทั้งหมดใน Unit Zone ของคุณได้รับ +1/+0 ต่อจำนวน Life ที่หงายอยู่ของคุณทุกๆ 2 ใบ
+[ACT] [1/Turn] สร้างความเสียหายแก่ Life ของคุณ 1 หน่วย: ในเทิร์นนี้คุณจะไม่แพ้เกม และเมื่อจบเทิร์น ฟื้นฟู Normal Life ของคุณ 1 ใบ (เปลี่ยน Normal Life ที่หงายอยู่ 1 ใบเป็นคว่ำ)</textarea></div>
+            <div><label class="text-xs font-medium text-gray-300">Flavor Text</label><input type="text" id="fieldFlavor" value="Gears spinning with wind..." class="w-full bg-slate-600 border border-slate-500 p-1 text-xs rounded" oninput="updateCard()"></div>
+        `;
+    }
+    else if (type === 'unit') {
         leftCircle.style.visibility = 'visible';
         htmlForm = `
             <div class="grid grid-cols-3 gap-2">
@@ -123,26 +160,6 @@ function switchCardType() {
             </div>
             <div><label class="text-xs font-medium text-gray-300">Effect Text</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">When opponent unit attacks: Destroy that unit if its DEF is 3 or less.</textarea></div>
             <div><label class="text-xs font-medium text-gray-300">Flavor Text</label><input type="text" id="fieldFlavor" value="High-pressure steam bullet..." class="w-full bg-slate-600 border border-slate-500 p-1 text-xs rounded" oninput="updateCard()"></div>
-        `;
-    }
-    else if (type === 'likit') {
-        leftCircle.style.visibility = 'hidden';
-        htmlForm = `
-            <div class="grid grid-cols-2 gap-2">
-                <div>
-                    <label class="text-xs font-medium text-gray-300">Element (Top-Right)</label>
-                    <select id="rightCircleValue" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" onchange="updateCard()">
-                        <option value="Wind">Wind</option><option value="Fire">Fire</option><option value="Water">Water</option><option value="Earth">Earth</option><option value="Light">Light</option><option value="Dark">Dark</option>
-                    </select>
-                </div>
-                <div><label class="text-xs font-medium text-gray-300">Archetype / Subtype</label><input type="text" id="fieldSubtype" value="Gear Steam" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-            </div>
-            <div class="grid grid-cols-2 gap-2">
-                <div><label class="text-xs font-medium text-gray-300">Normal Life (Na)</label><input type="number" id="fieldLifeNa" value="5" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-                <div><label class="text-xs font-medium text-gray-300">Special Life (SL)</label><input type="number" id="fieldSL" value="3" class="w-full bg-slate-600 border border-slate-500 p-1 text-sm rounded" oninput="updateCard()"></div>
-            </div>
-            <div><label class="text-xs font-medium text-gray-300">Effect Text</label><textarea id="fieldEffect" class="w-full bg-slate-600 border border-slate-500 p-1 text-xs h-16 rounded" oninput="updateCard()">[Ongoing] My New Product -> Once per turn...</textarea></div>
-            <div><label class="text-xs font-medium text-gray-300">Flavor Text</label><input type="text" id="fieldFlavor" value="Gears spinning with wind..." class="w-full bg-slate-600 border border-slate-500 p-1 text-xs rounded" oninput="updateCard()"></div>
         `;
     }
     else if (type === 'life') {
@@ -259,6 +276,8 @@ function updateCard() {
         cardTypeText.innerText = `Token / (${rightValue}) / ${sub}`;
         bottomStatusArea.innerHTML = '';
     }
+
+    autoFitEffectText();
 }
 
 function downloadCard() {
