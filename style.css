@@ -1,5 +1,3 @@
-@import url('https://fonts.googleapis.com/css2?family=Kanit:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400&display=swap');
-
 body { 
     font-family: 'Kanit', sans-serif; 
 }
@@ -12,99 +10,107 @@ body {
     background: white; 
 }
 
-/* ปรับความสูง Artwork ลงเล็กน้อยเพื่อเปิดพื้นที่ให้กล่องข้อความ */
 .card-art-container {
-    height: 275px !important; 
+    height: 250px !important; 
 }
 
-/* เพิ่มความสูง Effect Box */
 .card-effect-box {
-    height: 160px !important;
+    height: 185px !important;
 }
 
-/* ปรับระยะห่างบรรทัดและการตัดคำให้รองรับสระไทย */
 .card-effect-content {
-    line-height: 1.45 !important;
-    word-break: break-word;
-    white-space: pre-wrap;
-    width: 100%;
+    font-family: 'Kanit', sans-serif !important;
+    line-height: 1.7 !important;
+    word-break: break-word !important;
+    width: 100% !important;
+}
+
+.effect-paragraph {
+    margin-bottom: 5px !important;
+    line-height: 1.7 !important;
+}
+.effect-paragraph:last-child {
+    margin-bottom: 0 !important;
 }
 
 /* =========================================================
-   หมวดที่ 1: คีย์เวิร์ดประเภทความสามารถ (Ability Badges)
+   Base Badge Style - รองรับฟอนต์ Kanit ป้องกันขอบตัวอักษรแหว่ง
    ========================================================= */
-.badge-act     { background-color: #0284c7; color: white; border: 1px solid #0369a1; }
-.badge-auto    { background-color: #ea580c; color: white; border: 1px solid #c2410c; }
-.badge-counter { background-color: #dc2626; color: white; border: 1px solid #b91c1c; }
-.badge-ongoing { background-color: #16a34a; color: white; border: 1px solid #15803d; }
-
-/* =========================================================
-   หมวดที่ 2: ระบบเปลี่ยนร่าง & ไฮไลท์
-   ========================================================= */
-.badge-mech {
-    background-color: #ffffff;
-    color: #111827;
-    border: 1.5px solid #374151;
-    font-weight: 800;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.2);
-}
-
-/* =========================================================
-   หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว
-   ========================================================= */
-.badge-status {
-    background-color: #7e22ce;
-    color: white;
-    border: 1px solid #6b21a8;
-}
-
-/* =========================================================
-   หมวดที่ 4: การต่อสู้ / ปะทะ
-   ========================================================= */
-.badge-combat {
-    background-color: #ef4444;
-    color: white;
-    border: 1px solid #b91c1c;
-}
-
-/* =========================================================
-   หมวดที่ 5: ข้อจำกัดรอบการใช้งาน
-   ========================================================= */
-.badge-limit {
-    background-color: #475569;
-    color: white;
-    border: 1px solid #334155;
-}
-
-/* =========================================================
-   หมวดที่ 6: สัญลักษณ์การ์ดและทรัพยากร
-   ========================================================= */
-.badge-icon {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    min-width: 18px;
-    height: 16px;
-    padding: 0 3px;
-    background-color: #1e293b;
-    color: #f8fafc;
-    border: 1px solid #475569;
-    border-radius: 3px;
-    font-size: 9.5px;
-    font-weight: 800;
-    vertical-align: 1px;
-}
-
-/* Base Badge Style */
 .keyword-badge {
-    display: inline-block;
-    padding: 0px 5px;
-    border-radius: 3px;
-    font-weight: 700;
-    font-size: 10px;
-    margin-right: 3px;
-    margin-bottom: 1px;
-    line-height: 1.35;
-    vertical-align: 1px;
-    box-shadow: 0 1px 2px rgba(0,0,0,0.15);
+    display: inline-block !important;
+    padding: 2px 6px 3px 6px !important;
+    border-radius: 4px !important;
+    font-weight: 700 !important;
+    font-size: 10px !important;
+    line-height: 1.4 !important;
+    vertical-align: middle !important;
+    margin-right: 3px !important;
+    box-sizing: border-box !important;
+    overflow: visible !important;
+}
+
+/* หมวดที่ 1: ประเภทความสามารถหลัก */
+.badge-act     { background-color: #0284c7 !important; color: #ffffff !important; border: 1px solid #0369a1 !important; }
+.badge-auto    { background-color: #ea580c !important; color: #ffffff !important; border: 1px solid #c2410c !important; }
+.badge-counter { background-color: #dc2626 !important; color: #ffffff !important; border: 1px solid #b91c1c !important; }
+.badge-ongoing { background-color: #16a34a !important; color: #ffffff !important; border: 1px solid #15803d !important; }
+
+/* หมวดที่ 2: ไฮไลท์ / ระบบเปลี่ยนร่าง & เควส */
+.badge-mech {
+    background-color: #ffffff !important;
+    color: #111827 !important;
+    border: 1px solid #374151 !important;
+    font-weight: 800 !important;
+}
+
+/* หมวดที่ 3: สถานะ / เอฟเฟกต์ติดตัว & คำสาป */
+.badge-status {
+    background-color: #7e22ce !important;
+    color: #ffffff !important;
+    border: 1px solid #6b21a8 !important;
+}
+
+/* หมวดที่ 4: การต่อสู้ / ปะทะ & ป้องกัน */
+.badge-combat {
+    background-color: #ef4444 !important;
+    color: #ffffff !important;
+    border: 1px solid #b91c1c !important;
+}
+
+/* หมวดที่ 5: ข้อจำกัดรอบการใช้งาน */
+.badge-limit {
+    background-color: #475569 !important;
+    color: #ffffff !important;
+    border: 1px solid #334155 !important;
+}
+
+/* หมวดที่ 6: ทริกเกอร์พิเศษ (Life Trigger & Mill) */
+.badge-trigger {
+    background-color: #059669 !important;
+    color: #ffffff !important;
+    border: 1px solid #047857 !important;
+}
+
+/* หมวดที่ 7: สัญกรณ์สลับสถานะการ์ด (Stand / Rest) */
+.badge-state {
+    background-color: #0d9488 !important;
+    color: #ffffff !important;
+    border: 1px solid #0f766e !important;
+}
+
+/* หมวดที่ 8: สัญลักษณ์คำย่อและทรัพยากร */
+.badge-icon {
+    display: inline-block !important;
+    min-width: 16px !important;
+    text-align: center !important;
+    padding: 1px 4px 2px 4px !important;
+    background-color: #1e293b !important;
+    color: #f8fafc !important;
+    border: 1px solid #475569 !important;
+    border-radius: 3px !important;
+    font-size: 9px !important;
+    font-weight: 800 !important;
+    line-height: 1.4 !important;
+    vertical-align: middle !important;
+    margin-right: 2px !important;
 }

@@ -4,29 +4,30 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Card Template Maker - Split Version</title>
-    <!-- Tailwind CSS & html2canvas -->
+    <!-- โหลด Font Kanit โดยตรงใน Head เพื่อแก้บั๊ก html2canvas ตัดหัวตัวอักษร -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Kanit:wght@400;600;700;800&display=swap" rel="stylesheet">
+
+    <!-- Tailwind CSS, html2canvas & SheetJS -->
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
-    <!-- SheetJS CDN สำหรับอ่าน Excel -->
     <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <!-- เชื่อมโยงไฟล์ CSS แยก -->
     <link rel="stylesheet" href="style.css">
 </head>
 <body class="bg-slate-900 min-h-screen p-6 text-gray-100">
 
     <div class="max-w-6xl mx-auto bg-slate-800 rounded-xl shadow-2xl p-6 grid grid-cols-1 md:grid-cols-2 gap-8 border border-slate-700">
         
-        <!-- ฝั่งซ้าย: ฟอร์มกรอกข้อมูลการ์ด -->
+        <!-- ฝั่งซ้าย: ฟอร์มตั้งค่า -->
         <div class="space-y-4">
             <h2 class="text-2xl font-bold text-white border-b border-slate-700 pb-2">⚙️ Card Creator Studio</h2>
             
-            <!-- อัปโหลดไฟล์ Excel (.xlsx) -->
             <div class="bg-slate-700/80 p-3 rounded-lg border border-slate-600">
                 <label class="block text-xs font-bold text-emerald-400 mb-1">📊 Import Cards from Excel (.xlsx)</label>
                 <input type="file" id="excelFileInput" accept=".xlsx, .xls" class="block w-full text-xs text-gray-300 file:mr-3 file:py-1.5 file:px-3 file:rounded-md file:border-0 file:text-xs file:font-semibold file:bg-emerald-600 file:text-white hover:file:bg-emerald-700 cursor-pointer" onchange="handleExcelUpload(event)">
             </div>
 
-            <!-- เลือกประเภทการ์ดหลัก -->
             <div>
                 <label class="block text-sm font-medium text-gray-300">1. Select Card Type</label>
                 <select id="cardTypeSelect" class="mt-1 block w-full rounded-md border border-slate-600 shadow-sm p-2 bg-slate-700 text-white" onchange="switchCardType()">
@@ -38,7 +39,6 @@
                 </select>
             </div>
 
-            <!-- ฟอร์มอินพุตทั่วไป -->
             <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 <div>
                     <label class="block text-sm font-medium text-gray-300">Card ID</label>
@@ -61,10 +61,8 @@
                 </div>
             </div>
 
-            <!-- ฟอร์มเฉพาะประเภทการ์ด -->
             <div id="dynamicFields" class="space-y-4 bg-slate-700/50 p-4 rounded-lg border border-slate-700"></div>
 
-            <!-- ปุ่ม Export -->
             <div class="pt-2">
                 <button onclick="downloadCard()" class="w-full bg-emerald-600 hover:bg-emerald-700 text-white font-bold py-3 px-4 rounded-lg shadow-lg transition flex items-center justify-center space-x-2 text-lg">
                     <span>💾</span> <span>Export Card (PNG)</span>
@@ -78,7 +76,6 @@
             
             <div id="cardCaptureArea" class="card-preview border border-gray-300 shadow-2xl flex flex-col justify-between p-3.5 text-slate-900 relative bg-white">
                 
-                <!-- ส่วนบนสุด: Cost และ Icon ขวาบน -->
                 <div class="flex justify-between items-start h-12 relative z-10 shrink-0">
                     <div id="leftCircle" class="w-11 h-11 bg-purple-600 rounded-full flex items-center justify-center text-white font-bold text-xl shadow-md border-2 border-white">
                         6
@@ -89,8 +86,7 @@
                     </div>
                 </div>
 
-                <!-- กล่องรูป Artwork -->
-                <div class="card-art-container my-1.5 bg-sky-50 rounded border border-gray-300 overflow-hidden relative flex items-center justify-center shrink-0">
+                <div class="card-art-container my-1 bg-sky-50 rounded border border-gray-300 overflow-hidden relative flex items-center justify-center shrink-0">
                     <img id="cardArt" src="" class="w-full h-full object-cover hidden">
                     <div id="artPlaceholder" class="text-center text-sky-400 p-2">
                         <svg class="mx-auto h-10 w-10 mb-1" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
@@ -98,11 +94,10 @@
                     </div>
                 </div>
 
-                <!-- กล่อง Effect -->
-                <div id="effectBox" class="card-effect-box bg-amber-50 p-2.5 rounded border border-amber-200 flex flex-col justify-between shadow-inner relative overflow-hidden shrink-0">
-                    <div class="flex-1 flex flex-col overflow-hidden">
-                        <div id="cardTypeText" class="font-bold text-xs text-amber-900 border-b border-amber-300 pb-0.5 mb-1 shrink-0">Unit / Knight / Fire</div>
-                        <div id="cardEffectText" class="card-effect-content text-slate-800 font-medium whitespace-pre-wrap overflow-hidden">Effect...</div>
+                <div id="effectBox" class="card-effect-box bg-amber-50 px-3 py-2 rounded border border-amber-200 flex flex-col justify-between shadow-inner relative shrink-0">
+                    <div class="w-full">
+                        <div id="cardTypeText" class="font-bold text-xs text-amber-900 border-b border-amber-300 pb-0.5 mb-1.5">Unit / Knight / Fire</div>
+                        <div id="cardEffectText" class="card-effect-content text-slate-800 font-medium">Effect...</div>
                     </div>
                     
                     <div id="cardFlavorText" class="text-[9.5px] italic text-gray-500 text-right font-normal border-t border-amber-200/50 pt-0.5 mt-1 shrink-0 truncate">
@@ -110,15 +105,12 @@
                     </div>
                 </div>
 
-                <!-- แถบชื่อการ์ด -->
                 <div class="my-1 bg-zinc-300 text-center py-1 rounded font-bold text-slate-900 shadow border border-zinc-400 text-xs truncate px-2 shrink-0" id="cardNameDisplay">
                     Gray Lion Knight - Ash
                 </div>
 
-                <!-- ส่วน Status ล่างสุด -->
                 <div id="bottomStatusArea" class="h-5 flex justify-center items-center mb-3 shrink-0"></div>
 
-                <!-- Footer Card ID และ Creator -->
                 <div class="absolute bottom-1 left-3 right-3 flex justify-between items-center text-[9px] font-semibold text-gray-500 pointer-events-none">
                     <span id="displayCardID">ATH-TD-06</span>
                     <span id="displayCreator">Illust: Studio ATH</span>
@@ -129,16 +121,13 @@
 
     </div>
 
-    <!-- โซนแสดงผลการ์ดที่ Import จาก Excel -->
     <div class="max-w-6xl mx-auto mt-8 bg-slate-800 rounded-xl p-6 border border-slate-700">
         <div class="flex justify-between items-center mb-4 border-b border-slate-700 pb-2">
             <h3 class="text-xl font-bold text-white">🃏 Generated Cards Deck (<span id="cardCount">0</span> cards)</h3>
         </div>
-        
         <div id="deckGridContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 justify-items-center"></div>
     </div>
 
-    <!-- เชื่อมต่อสคริปต์ -->
     <script src="script.js"></script>
 </body>
 </html>
